@@ -1,19 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
-export default function Greeting(props) {
-  const [name, setName] = useState(props.name);
-  const [changed, setChanged] = useState(false);
+export default function Greeting({ name }) {
+  const prevName = useRef(name);
 
   useEffect(() => {
-    if (props.name !== name) {
-      setName(props.name);
-      setChanged(true);
-    }
-  }, [props.name]);
+    prevName.current = name;
+  }, [name]);
 
   return (
     <div className="greeting">
-      {changed ? (
+      {prevName.current !== name ? (
         <h2>Привет, у тебя поменялось имя, теперь ты {name}!</h2>
       ) : (
         <h2>Привет, {name}!</h2>
